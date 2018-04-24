@@ -11,7 +11,10 @@ neuron::neuron(int size)
 	Weights.resize(size);
 	for (int i = 0; i < size; i++)
 	{
-		Weights[i] = rand();
+		random_device rd;
+		mt19937 gen(rd());
+		uniform_real_distribution<> dis(0, 1);
+		Weights[i] = dis(gen);
 	}
 }
 
