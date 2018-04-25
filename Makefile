@@ -21,7 +21,7 @@ main.o: main.cpp Neuron.h #Layers.h
 Neuron.o: Neuron.cpp Neuron.h
 	$(COMPILER) -c Neuron.cpp
 	
-#Layers.o: Layers.cpp Layers.h
+Layers.o: Layers.cpp Layers.h
 	$(COMPILER) -c Layers.cpp
 
 clean : 
