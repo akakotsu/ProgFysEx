@@ -3,27 +3,28 @@
 #include<cmath>
 #include<vector>
 #include<random>
+#include<stdexcept>
 
 using namespace std;
 
 
 class neuron{
 public:
-	neuron(vector<float> tw,float bias);
-	neuron(int);
+	neuron(vector<float>,float);
+	neuron(signed int);
 	~neuron();
 	void setWeights(vector<float>);
 	void setBias(float);
 
 	vector<float> getWeights();
 	float getBias();
-	int getNumberOfInputs();
+	const signed int getNumberOfInputs();
 	float sigmoid(float);				
 	float dsigmoid(float);					
 	float activateFunc(vector <float >);			
 	float resultFunc(vector <float >);	
-	void operator()(vector<float> pi) { resultFunc(pi); }
-;	
+	void operator()(vector<float> pi) { resultFunc(pi); };
+
 protected:
 	vector<float> Weights;
 	float Bias;

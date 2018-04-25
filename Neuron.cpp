@@ -6,7 +6,7 @@ neuron::neuron(vector<float> tw,float bias)
 	setBias(bias);
 }
 
-neuron::neuron(int size)
+neuron::neuron(signed int size)
 {
 	Weights.resize(size);
 	for (int i = 0; i < size; i++)
@@ -43,14 +43,14 @@ float neuron::getBias()
 	return Bias;
 }
 
-int neuron::getNumberOfInputs()
+const signed int neuron::getNumberOfInputs()
 {
 	return Weights.size();
 }
 
 float neuron::sigmoid(float z)
 {
-	return 1 / (1 + exp(-z));
+	return (1 / (1 + exp(-z)));
 }
 
 float neuron::dsigmoid(float z)
