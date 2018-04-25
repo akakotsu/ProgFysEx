@@ -6,7 +6,7 @@ neuron::neuron(vector<float*> WeightVector, float* BiasNumber)
 	setBias(BiasNumber);
 }
 
-neuron::neuron(int WeightVectorSize)
+neuron::neuron(signed int WeightVectorSize)
 {
 	Weights.resize(WeightVectorSize);
 	for (int i = 0; i < WeightVectorSize; i++)
@@ -37,9 +37,14 @@ void neuron::setBias(float* BiasNumber)
 	Bias = *BiasNumber;
 }
 
-vector<float>* neuron::getWeights()
+vector<float*> neuron::getWeights()
 {
-	return &Weights;
+	vector<float*> TempWeights(Weights.size());
+	for (int i = 0; i < Weights.size(); i++)
+	{
+		TempWeights[i] = &Weights[i];
+	}
+	return TempWeights;
 }
 
 float* neuron::getBias()
@@ -47,7 +52,7 @@ float* neuron::getBias()
 	return &Bias;
 }
 
-const int neuron::getNumberOfInputs()
+const signed int neuron::getNumberOfInputs()
 {
 	return Weights.size();
 }
