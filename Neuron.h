@@ -3,29 +3,28 @@
 #include<cmath>
 #include<vector>
 #include<random>
-#include<stdexcept>
 
 using namespace std;
 
 
-class neuron{
+class neuron {
 public:
-	neuron(vector<float>,float);
-	neuron(signed int);
-	~neuron();
-	void setWeights(vector<float>);
-	void setBias(float);
+	neuron(vector<float*>, float*); //Constructor1, weight provided
+	neuron(signed int); //Constructor2, no weight provided, start of the program
+	~neuron(); //Destructor
+	void setWeights(vector<float*>); //Sets provided weights to vector Weights
+	void setBias(float*); //Sets provided bias to variable Bias
 
-	vector<float> getWeights();
-	float getBias();
-	const signed int getNumberOfInputs();
-	float sigmoid(float);				
-	float dsigmoid(float);					
-	float activateFunc(vector <float >);			
-	float resultFunc(vector <float >);	
-	void operator()(vector<float> pi) { resultFunc(pi); };
-
+	vector<float>* getWeights(); //get-function to access weights
+	float* getBias(); //get-function to access bias
+	const signed int getNumberOfInputs(); //get-function to access #inputs = size of Weights
+	float sigmoid(float); //Sigmoid function
+	float dsigmoid(float); //Derivative Sigmoid function
+	float activateFunc(vector <float*>); //Activate function, calls sigmoid
+	float* resultFunc(vector <float*>); //Calculates the neuron output, calls activateFunc
+	void operator()(vector<float*> pi) { resultFunc(pi); } //Overloading ()
 protected:
 	vector<float> Weights;
 	float Bias;
+	float Output;
 };

@@ -1,20 +1,20 @@
 #include "Neuron.h"
 
-neuron::neuron(vector<float> tw,float bias)
+neuron::neuron(vector<float*> WeightVector, float* BiasNumber)
 {
-	setWeights(tw);
-	setBias(bias);
+	setWeights(WeightVector);
+	setBias(BiasNumber);
 }
 
-neuron::neuron(signed int size)
+neuron::neuron(signed int WeightVectorSize)
 {
-	Weights.resize(size);
-	for (int i = 0; i < size; i++)
+	Weights.resize(WeightVectorSize);
+	for (int i = 0; i < WeightVectorSize; i++)
 	{
-		random_device rd;
-		mt19937 gen(rd());
-		uniform_real_distribution<> dis(0, 1);
-		Weights[i] = dis(gen);
+		random_device RandomDevice; //Initializes random engine
+		mt19937 Generator(RandomDevice()); //Mersenne Twister 19937 generator, rng
+		uniform_real_distribution<> Distribution(-1, 1); //uniform probability distribution
+		Weights[i] = Distribution(Generator); //Generate random weights
 	}
 }
 
@@ -23,24 +23,28 @@ neuron::~neuron()
 {
 }
 
-void neuron::setWeights(vector<float> w)
+void neuron::setWeights(vector<float*> WeightVector)
 {
-	Weights = w;
+	Weights.resize(WeightVector.size());
+	for (int i = 0; i < WeightVector.size(); i++)
+	{
+		Weights[i] = *WeightVector[i];
+	}
 }
 
-void neuron::setBias(float b)
+void neuron::setBias(float* BiasNumber)
 {
-	Bias = b;
+	Bias = *BiasNumber;
 }
 
-vector<float> neuron::getWeights()
+vector<float>* neuron::getWeights()
 {
-	return Weights;
+	return &Weights;
 }
 
-float neuron::getBias()
+float* neuron::getBias()
 {
-	return Bias;
+	return &Bias;
 }
 
 const signed int neuron::getNumberOfInputs()
@@ -50,7 +54,7 @@ const signed int neuron::getNumberOfInputs()
 
 float neuron::sigmoid(float z)
 {
-	return (1 / (1 + exp(-z)));
+	return 1 / (1 + exp(-z));
 }
 
 float neuron::dsigmoid(float z)
@@ -58,18 +62,20 @@ float neuron::dsigmoid(float z)
 	return sigmoid(z)*(1 - sigmoid(z));
 }
 
-float neuron::activateFunc(vector<float> input)
+float neuron::activateFunc(vector<float*> input)
 {
-	float temp = 0;
-	for (int i = 0; i < input.size(); i++) 
+	float Sum = 0;
+	for (int i = 0; i < input.size(); i++)
 	{
-		temp += Weights[i] * input[i];
+		Sum += Weights[i] * *input[i]; //w.x dot product
 	}
-	temp += Bias;
-	return temp;
+	Sum += Bias;
+	return Sum;
 }
 
-float neuron::resultFunc(vector<float> input) 
+float* neuron::resultFunc(vector<float*> input)
 {
-	return sigmoid(activateFunc(input));
+	Output = sigmoid(activateFunc(input));
+	return  &Output;
 }
+
