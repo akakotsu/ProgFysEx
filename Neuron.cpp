@@ -16,6 +16,11 @@ neuron::neuron(int WeightVectorSize)
 		uniform_real_distribution<> Distribution(-1, 1); //uniform probability distribution
 		Weights[i] = Distribution(Generator); //Generate random weights
 	}
+
+	random_device RandomDevice; 
+	mt19937 Generator(RandomDevice()); 
+	uniform_real_distribution<> Distribution(-1, 1); 
+	Bias = Distribution(Generator); 
 }
 
 
