@@ -7,25 +7,22 @@ COMPILER = g++ -g -std=c++11 -Wall
 #Macros not necessary
 
 
-all:Neuron#,Layers
+all:Neuron
 
-Neuron: Neuron.o main.o
-	$(COMPILER) Neuron.o main.o -o Neuron
-	
-Layers: Layer.o main.o
-	$(COMPILER)  Layers.o main.o -o Layers
+Neuron: Neuron.o main.o Layer.o
+	$(COMPILER) Neuron.o main.o Layer.o -o Neuron
 
-main.o: main.cpp Neuron.h #Layers.h
+main.o: main.cpp Layer.h Neuron.h
 	$(COMPILER) main.cpp -c
+
+Layer.o: Layer.cpp Layer.h
+	$(COMPILER) -c Layer.cpp
 
 Neuron.o: Neuron.cpp Neuron.h
 	$(COMPILER) Neuron.cpp -c
-	
-Layers.o: Layers.cpp Layers.h
-	$(COMPILER) -c Layers.cpp
 
 clean : 
-	rm *.o Neuron #Layers
+	rm *.o Neuron
 	
 
 
