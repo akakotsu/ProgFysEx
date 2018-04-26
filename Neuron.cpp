@@ -11,16 +11,10 @@ neuron::neuron(int WeightVectorSize)
 	Weights.resize(WeightVectorSize);
 	for (int i = 0; i < WeightVectorSize; i++)
 	{
-		random_device RandomDevice; //Initializes random engine
-		mt19937 Generator(RandomDevice()); //Mersenne Twister 19937 generator, rng
-		uniform_real_distribution<> Distribution(-1, 1); //uniform probability distribution
-		Weights[i] = Distribution(Generator); //Generate random weights
+		Weights[i] = randomize(-1, 1);
 	}
 
-	random_device RandomDevice; 
-	mt19937 Generator(RandomDevice()); 
-	uniform_real_distribution<> Distribution(-1, 1); 
-	Bias = Distribution(Generator); 
+	Bias = randomize(-1, 1);
 }
 
 
@@ -40,6 +34,14 @@ void neuron::setWeights(vector<fp> WeightVector)
 void neuron::setBias(fp BiasNumber)
 {
 	Bias = *BiasNumber;
+}
+
+float neuron::randomize(float Minimum, float Maximum)
+{
+	random_device RandomDevice; //Initializes random engine
+	mt19937 Generator(RandomDevice()); //Mersenne Twister 19937 generator, rng
+	uniform_real_distribution<> Distribution(Minimum, Maximum); //uniform probability distribution
+	return Distribution(Generator); //Generate random weights
 }
 
 vector<fp> neuron::getWeights()
