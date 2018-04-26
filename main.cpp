@@ -1,13 +1,14 @@
-#include "Neuron.h"
+#include "Layer.h"
 
 
 int main() {
 	float x = 1;
 	float y = 0;;
-	neuron pi(2);
-	cout << *pi.getWeights()[0] << endl;
+	//layer pi(2,2);
+	layer pi({ {&x,&y},{&y,&x} }, { &x,&x });
+	cout << *pi.getWeights()[0][0] << endl;
 	pi.setWeights(pi.getWeights());
-	cout << *pi.getWeights()[0] << endl;
-	cout << *pi.resultFunc({ &x,&y })<<endl;
+	cout << *pi.getWeights()[0][0] << endl;
+	cout << *pi.resultFunc({ { &x,&y },{&y,&x} })[0] << endl;
 	return 0;
 }
