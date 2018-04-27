@@ -30,7 +30,6 @@ void layer::setBias(vector<fp> LayerBias)
 {
 	for (int i = 0; i < LayerBias.size(); i++)
 	{
-		cout << "Bias: "<<*LayerBias[i] << endl;
 		Neurons[i].setBias(LayerBias[i]);
 	}
 }
@@ -73,7 +72,7 @@ vector<fp> layer::resultFunc(vector<vector<fp>> LayerInput)
 vector<float> layer::dsigmoid(vector<float> z)
 {
 	vector<float> DSigmoidOutput(z.size());
-	for (int i=0; i < z.size(); i++)
+	for (int i = 0; i < z.size(); i++)
 	{
 		DSigmoidOutput[i] = Neurons[i].dsigmoid(z[i]);
 	}

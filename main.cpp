@@ -5,7 +5,7 @@ float randomize(float Minimum, float Maximum)
 {
 	random_device RandomDevice; //Initializes random engine
 	mt19937 Generator(RandomDevice()); //Mersenne Twister 19937 generator, rng
-	uniform_real_distribution<> Distribution(Minimum, Maximum); //uniform probability distribution between Minimum and Maximum
+	uniform_real_distribution<float> Distribution(Minimum, Maximum); //uniform probability distribution between Minimum and Maximum
 	return Distribution(Generator); //Generate random weights
 }
 
@@ -15,6 +15,16 @@ int main() {
 	auto start = std::chrono::system_clock::now();
 	int NS = 150;
 	int WS = 728;
+	vector<fp> input(WS);
+	for (int i = 0; i < WS; i++)
+	{
+		input[i] =&x;
+	}
+	vector<vector<fp>> FInput(NS);
+	for (int j = 0; j < NS; j++)
+	{
+		FInput[j] = input;
+	}
 	layer pi(NS,WS);
 	//cout << *pi.getWeights()[0][0] << endl;
 	//pi.setWeights(pi.getWeights());
@@ -38,7 +48,9 @@ int main() {
 			random2 = randomize(-10, 10);
 			LB[j] = &random2;
 		}
-
+		pi.setWeights(LW);
+		pi.setBias(LB);
+		pi.resultFunc(FInput);
 	}
 	auto end = std::chrono::system_clock::now();
 	cout << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << endl;

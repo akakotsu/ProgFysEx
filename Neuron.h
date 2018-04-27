@@ -18,7 +18,7 @@ public:
 	vector<fp> getWeights(); //get-function to access weights
 	fp getBias(); //get-function to access bias
 	const int getNumberOfInputs(); //get-function to access #inputs = size of Weights
-	float randomize(float, float);
+	float randomize(float, float); //rng function
 	float sigmoid(float); //Sigmoid function
 	float dsigmoid(float); //Derivative Sigmoid function
 	float activateFunc(vector <fp>); //Activate function, calls sigmoid

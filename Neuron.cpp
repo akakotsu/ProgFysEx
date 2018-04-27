@@ -40,7 +40,7 @@ float neuron::randomize(float Minimum, float Maximum)
 {
 	random_device RandomDevice; //Initializes random engine
 	mt19937 Generator(RandomDevice()); //Mersenne Twister 19937 generator, rng
-	uniform_real_distribution<> Distribution(Minimum, Maximum); //uniform probability distribution
+	uniform_real_distribution<float> Distribution(Minimum, Maximum); //uniform probability distribution between Minimum and Maximum
 	return Distribution(Generator); //Generate random weights
 }
 
