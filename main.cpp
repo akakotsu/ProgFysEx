@@ -29,7 +29,7 @@ int main() {
 	vector<vector<float>> LW(LWP.size(), vector<float>(WS));
 	vector<fp> LBP = pi.getBias();
 	vector<float> LB(LBP.size());
-	int loopsize = 10;
+	int loopsize = 100;
 	float random1;
 	float random2;
 	for (int i=0; i < loopsize;i++)

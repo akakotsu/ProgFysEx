@@ -80,10 +80,8 @@ float neuron::activateFunc(vector<fp> input)
 	for (int i = 0; i < input.size(); i++)
 	{
 		Sum += Weights[i] * *input[i]; //w.x dot product
-		//cout << Weights[i] << endl;
 	}
 	Sum += Bias;
-	//cout << Sum << endl;
 	return Sum;
 }
 
