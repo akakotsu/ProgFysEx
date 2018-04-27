@@ -71,17 +71,17 @@ vector<neuron*> layer::getNeurons()
 
 vector<fp> layer::resultFunc(vector<fp> LayerInput,bool FirstLayer)
 {
-	vector<fp> LayerOutput(LayerInput.size());
+	vector<fp> LayerOutput(Neurons.size());
 	if (FirstLayer == true)
 	{
-		for (int i = 0; i < LayerInput.size(); i++)
+		for (int i = 0; i < Neurons.size(); i++)
 		{
 			LayerOutput[i] = Neurons[i].resultFunc( { LayerInput[i] } );
 		}
 	}
 	else
 	{
-		for (int i = 0; i < LayerInput.size(); i++)
+		for (int i = 0; i < Neurons.size(); i++)
 		{
 			LayerOutput[i] = Neurons[i].resultFunc(LayerInput);
 		}
@@ -91,12 +91,11 @@ vector<fp> layer::resultFunc(vector<fp> LayerInput,bool FirstLayer)
 
 vector<float> layer::dsigmoid(vector<fp> Input,bool FirstLayer)
 {
-	vector<float> DSigmoidOutput(Input.size());
+	vector<float> DSigmoidOutput(Neurons.size());
 	float z;
 	if (FirstLayer == true)
 	{
-
-		for (int i = 0; i < Input.size(); i++)
+		for (int i = 0; i < Neurons.size(); i++)
 		{
 			z = Neurons[i].activateFunc({ Input[i] });
 			DSigmoidOutput[i] = Neurons[i].dsigmoid(z);
@@ -104,7 +103,7 @@ vector<float> layer::dsigmoid(vector<fp> Input,bool FirstLayer)
 	}
 	else
 	{
-		for (int i = 0; i < Input.size(); i++)
+		for (int i = 0; i < Neurons.size(); i++)
 		{
 			z = Neurons[i].activateFunc(Input);
 			DSigmoidOutput[i] = Neurons[i].dsigmoid(z);

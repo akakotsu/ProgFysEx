@@ -15,8 +15,8 @@ int main() {
 	auto start = std::chrono::system_clock::now();
 	int NS = 150;
 	int WS = 728;
-	vector<fp> FInput(NS);
-	for (int j = 0; j < NS; j++)
+	vector<fp> FInput(WS);
+	for (int j = 0; j < WS; j++)
 	{
 		FInput[j] = &x;
 	}
@@ -25,9 +25,11 @@ int main() {
 	//pi.setWeights(pi.getWeights());
 	//cout << *pi.getWeights()[0][0] << endl;
 	//cout << *pi.resultFunc({ { &x,&y },{&y,&x} })[0] << endl;
-	vector<vector<fp>> LW = pi.getWeights();
-	vector<fp> LB = pi.getBias();
-	int loopsize = 100;
+	vector<vector<fp>> LWP = pi.getWeights();
+	vector<vector<float>> LW(LWP.size(), vector<float>(WS));
+	vector<fp> LBP = pi.getBias();
+	vector<float> LB(LBP.size());
+	int loopsize = 10;
 	float random1;
 	float random2;
 	for (int i=0; i < loopsize;i++)
@@ -37,15 +39,18 @@ int main() {
 		{
 			for (int k = 0; k < WS; k++)
 			{
-				random1 = randomize(-10, 10);
-				LW[j][k] = &random1;
+				//random1 = randomize(-1, 1);
+				//cout << random1 << endl;
+				LW[j][k] = randomize(-1, 1);
+				LWP[j][k] = &LW[j][k];
 			}
-			random2 = randomize(-10, 10);
-			LB[j] = &random2;
+			//random2 = randomize(-1, 1);
+			LB[j] = randomize(-1, 1);
+			LBP[j] = &LB[j];
 		}
-		pi.setWeights(LW);
-		pi.setBias(LB);
-		cout << "Result: "<< *pi(FInput,true)[0] << endl;
+		pi.setWeights(LWP);
+		pi.setBias(LBP);
+		cout << "Result: "<< *pi(FInput,false)[0] << endl;
 
 	}
 	auto end = std::chrono::system_clock::now();
