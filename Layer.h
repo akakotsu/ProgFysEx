@@ -13,8 +13,10 @@ public:
 	vector<vector<fp>> getWeights();
 	vector<fp> getBias();
 	const int getNumberOfNeurons();
-	vector<fp> resultFunc(vector<vector<fp>>);
-	vector<float> dsigmoid(vector<float>);
+	vector<neuron*> getNeurons();
+	vector<fp> resultFunc(vector<fp>,bool);
+	vector<float> dsigmoid(vector<fp>,bool);
+	void operator()(vector<fp> LayerInput,bool FirstLayer) { resultFunc(LayerInput,FirstLayer); }
 
 protected:
 	vector<neuron> Neurons;

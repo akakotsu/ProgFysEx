@@ -15,15 +15,10 @@ int main() {
 	auto start = std::chrono::system_clock::now();
 	int NS = 150;
 	int WS = 728;
-	vector<fp> input(WS);
-	for (int i = 0; i < WS; i++)
-	{
-		input[i] =&x;
-	}
-	vector<vector<fp>> FInput(NS);
+	vector<fp> FInput(NS);
 	for (int j = 0; j < NS; j++)
 	{
-		FInput[j] = input;
+		FInput[j] = &x;
 	}
 	layer pi(NS,WS);
 	//cout << *pi.getWeights()[0][0] << endl;
@@ -50,7 +45,7 @@ int main() {
 		}
 		pi.setWeights(LW);
 		pi.setBias(LB);
-		pi.resultFunc(FInput);
+		pi(FInput,true);
 	}
 	auto end = std::chrono::system_clock::now();
 	cout << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << endl;
