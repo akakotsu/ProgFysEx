@@ -102,11 +102,13 @@ vector<float> layer::dsigmoid(vector<fp> Input,bool FirstLayer)
 			DSigmoidOutput[i] = Neurons[i].dsigmoid(z);
 		}
 	}
-	
-	for (int i = 0; i < Input.size(); i++)
+	else
 	{
-		z = Neurons[i].activateFunc(Input);
-		DSigmoidOutput[i] = Neurons[i].dsigmoid(z);
+		for (int i = 0; i < Input.size(); i++)
+		{
+			z = Neurons[i].activateFunc(Input);
+			DSigmoidOutput[i] = Neurons[i].dsigmoid(z);
+		}
 	}
 	return DSigmoidOutput;
 }
