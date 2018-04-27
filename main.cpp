@@ -25,13 +25,11 @@ int main() {
 	//pi.setWeights(pi.getWeights());
 	//cout << *pi.getWeights()[0][0] << endl;
 	//cout << *pi.resultFunc({ { &x,&y },{&y,&x} })[0] << endl;
-	vector<vector<fp>> LWP = pi.getWeights();
-	vector<vector<float>> LW(LWP.size(), vector<float>(WS));
-	vector<fp> LBP = pi.getBias();
-	vector<float> LB(LBP.size());
+	vector<vector<fp>> LW = pi.getWeights();
+	
+	vector<fp> LB = pi.getBias();
+
 	int loopsize = 100;
-	float random1;
-	float random2;
 	for (int i=0; i < loopsize;i++)
 	{
 		cout << "loop: " << i << endl;
@@ -39,17 +37,10 @@ int main() {
 		{
 			for (int k = 0; k < WS; k++)
 			{
-				//random1 = randomize(-1, 1);
-				//cout << random1 << endl;
-				LW[j][k] = randomize(-1, 1);
-				LWP[j][k] = &LW[j][k];
+				*LW[j][k] = randomize(-1, 1);
 			}
-			//random2 = randomize(-1, 1);
-			LB[j] = randomize(-1, 1);
-			LBP[j] = &LB[j];
+			*LB[j] = randomize(-1, 1);
 		}
-		pi.setWeights(LWP);
-		pi.setBias(LBP);
 		cout << "Result: "<< *pi(FInput,false)[0] << endl;
 
 	}
