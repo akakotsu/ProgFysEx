@@ -23,7 +23,7 @@ public:
 	float dsigmoid(float); //Derivative Sigmoid function
 	float activateFunc(vector <fp>); //Activate function, calls sigmoid
 	fp resultFunc(vector <fp>); //Calculates the neuron output, calls activateFunc
-	void operator()(vector<fp> pi) { resultFunc(pi); } //Overloading ()
+	fp operator()(vector<fp> NeuronInput) {return resultFunc(NeuronInput); } //Overloading ()
 protected:
 	vector<float> Weights;
 	float Bias;

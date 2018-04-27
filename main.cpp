@@ -45,7 +45,8 @@ int main() {
 		}
 		pi.setWeights(LW);
 		pi.setBias(LB);
-		pi(FInput,true);
+		cout << "Result: "<< *pi(FInput,true)[0] << endl;
+
 	}
 	auto end = std::chrono::system_clock::now();
 	cout << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << endl;

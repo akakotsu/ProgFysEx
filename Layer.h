@@ -16,7 +16,7 @@ public:
 	vector<neuron*> getNeurons();
 	vector<fp> resultFunc(vector<fp>,bool);
 	vector<float> dsigmoid(vector<fp>,bool);
-	void operator()(vector<fp> LayerInput,bool FirstLayer) { resultFunc(LayerInput,FirstLayer); }
+	vector<fp> operator()(vector<fp> LayerInput, bool FirstLayer) { return resultFunc(LayerInput, FirstLayer); }
 
 protected:
 	vector<neuron> Neurons;
