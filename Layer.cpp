@@ -16,11 +16,12 @@ layer::layer(vector<vector<fp>>LayerWeights, vector<fp> LayerBias, bool FirstLay
 	}
 	FirstLayer = FirstLayerParam;
 	NumberOfNeurons = LayerBias.size();
-	NumberOfInputs = LayerWeights[0].size();
+	NumberOfInputs = LayerWeights[0].size(); //Because it is a priori known that every neuron takes an equal amount of inputs
 }
 
 layer::layer(int InitNumberOfNeurons, int InitNumberOfInputs, bool FirstLayerParam)
 {
+	//in every layer each neuron has the same amount of inputs and thus the same amount of weights
 	if (InitNumberOfNeurons <= 0 || InitNumberOfInputs <= 0)
 	{
 		throw invalid_argument("Both constructor inputs must be a positive integer");
@@ -38,6 +39,26 @@ layer::layer(int InitNumberOfNeurons, int InitNumberOfInputs, bool FirstLayerPar
 layer::~layer()
 {
 
+}
+
+layer::layer(const layer &Layer1)
+{
+	/*Neurons = Layer1.Neurons;
+	FirstLayer = Layer1.FirstLayer;
+	NumberOfNeurons = Layer1.NumberOfNeurons;
+	NumberOfInputs = Layer1.NumberOfInputs;*/
+}
+
+layer& layer::operator = (const layer& Layer1)
+{
+	/*if (&Layer1 != this)
+	{
+		Neurons = Layer1.Neurons;
+		FirstLayer = Layer1.FirstLayer;
+		NumberOfNeurons = Layer1.NumberOfNeurons;
+		NumberOfInputs = Layer1.NumberOfInputs;
+	}*/
+	return *this;
 }
 
 void layer::setWeights(vector<vector<fp>> LayerWeights)
@@ -101,15 +122,15 @@ vector<neuron*> layer::getNeurons()
 
 vector<fp> layer::resultFunc(vector<fp> LayerInput)
 {
-	vector<fp> LayerOutput(Neurons.size());
+	vector<fp> LayerOutput(NumberOfNeurons);
 	if (FirstLayer == true)
 	{
 		if (LayerInput.size() != NumberOfNeurons)
 		{
-			//throw invalid_argument("resultFunc() input needs to have the size " + NumberOfNeurons);
 			throw invalid_argument("resultFunc(): input has the wrong dimension");
 		}
 
+		//Because every Neuron in the first layer has only one weight/input
 		for (int i = 0; i < NumberOfNeurons; i++)
 		{
 			LayerOutput[i] = Neurons[i].resultFunc( { LayerInput[i] } );
@@ -121,6 +142,8 @@ vector<fp> layer::resultFunc(vector<fp> LayerInput)
 		{
 			throw invalid_argument("resultFunc(): input has the wrong dimension");
 		}
+
+		//Because every Neuron in the has the same input: all the outputs of the previous layer 
 		for (int i = 0; i < NumberOfNeurons; i++)
 		{
 			LayerOutput[i] = Neurons[i].resultFunc(LayerInput);
@@ -131,6 +154,7 @@ vector<fp> layer::resultFunc(vector<fp> LayerInput)
 
 vector<float> layer::dsigmoid(vector<fp> Input)
 {
+	//same reasoning as in resultFunc
 	vector<float> DSigmoidOutput(NumberOfNeurons);
 	float z;
 	if (FirstLayer == true)

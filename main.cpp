@@ -22,7 +22,7 @@ int main() {
 	}
 	try {
 		layer pi(NS, WS, true);
-
+		//layer pi2 = pi;
 		//cout << pi.getNumberOfNeurons() << endl;
 		//cout << *pi.getWeights()[0][0] << endl;
 		//pi.setWeights(pi.getWeights());

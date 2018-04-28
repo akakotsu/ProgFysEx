@@ -22,6 +22,24 @@ neuron::~neuron()
 {
 }
 
+neuron::neuron(const neuron &Neuron1)
+{
+	Weights = Neuron1.Weights;
+	Bias = Neuron1.Bias;
+	Output = Neuron1.Output;
+}
+
+neuron& neuron::operator = (const neuron& Neuron1)
+{
+	if (&Neuron1 != this)
+	{
+		Weights = Neuron1.Weights;
+		Bias = Neuron1.Bias;
+		Output = Neuron1.Output;
+	}
+	return *this;
+}
+
 void neuron::setWeights(vector<fp> WeightVector)
 {
 	Weights.resize(WeightVector.size());

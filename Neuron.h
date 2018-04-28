@@ -12,6 +12,8 @@ public:
 	neuron(vector<fp>, fp); //Constructor1, weight provided
 	neuron(int); //Constructor2, no weight provided, start of the program
 	~neuron(); //Destructor
+	neuron(const neuron&); //copy constructor
+	neuron& operator = (const neuron&); //assignment operator
 	void setWeights(vector<fp>); //Sets provided weights to vector Weights
 	void setBias(fp); //Sets provided bias to variable Bias
 
