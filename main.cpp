@@ -14,36 +14,46 @@ int main() {
 	float y = 0;
 	auto start = std::chrono::system_clock::now();
 	int NS = 150;
-	int WS = 728;
-	vector<fp> FInput(WS);
-	for (int j = 0; j < WS; j++)
+	int WS = 1;
+	vector<fp> FInput(NS);
+	for (int j = 0; j < NS; j++)
 	{
 		FInput[j] = &x;
 	}
-	layer pi(NS,WS);
-	//cout << *pi.getWeights()[0][0] << endl;
-	//pi.setWeights(pi.getWeights());
-	//cout << *pi.getWeights()[0][0] << endl;
-	//cout << *pi.resultFunc({ { &x,&y },{&y,&x} })[0] << endl;
-	vector<vector<fp>> LW = pi.getWeights();
-	
-	vector<fp> LB = pi.getBias();
+	try {
+		layer pi(NS, WS, true);
 
-	int loopsize = 100;
-	for (int i=0; i < loopsize;i++)
-	{
-		cout << "loop: " << i << endl;
-		for (int j = 0; j < NS; j++)
+		//cout << pi.getNumberOfNeurons() << endl;
+		//cout << *pi.getWeights()[0][0] << endl;
+		//pi.setWeights(pi.getWeights());
+		//cout << *pi.getWeights()[0][0] << endl;
+		//cout << *pi.resultFunc({ { &x,&y },{&y,&x} })[0] << endl;
+		vector<vector<fp>> LW = pi.getWeights();
+		
+		vector<fp> LB = pi.getBias();
+		
+		int loopsize = 100;
+		for (int i = 0; i < loopsize; i++)
 		{
-			for (int k = 0; k < WS; k++)
+			cout << "loop: " << i << endl;
+			for (int j = 0; j < NS; j++)
 			{
-				*LW[j][k] = randomize(-1, 1);
+				
+				for (int k = 0; k < WS; k++)
+				{
+					*LW[j][k] = randomize(-1, 1);
+				}
+				*LB[j] = randomize(-1, 1);
 			}
-			*LB[j] = randomize(-1, 1);
-		}
-		cout << "Result: "<< *pi(FInput,false)[0] << endl;
+			cout << "Result: " << *pi(FInput)[0] << endl;
 
+		}
 	}
+catch (const invalid_argument& e)
+{
+	cout << e.what() << endl;
+
+}
 	auto end = std::chrono::system_clock::now();
 	cout << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << endl;
 	return 0;

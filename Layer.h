@@ -1,10 +1,11 @@
 #pragma once
 #include"Neuron.h"
+#include<stdexcept>
 
 class layer {
 public:
-	layer(vector<vector<fp>>, vector<fp>);
-	layer(int,int);
+	layer(vector<vector<fp>>, vector<fp>,bool);
+	layer(int,int,bool);
 	~layer();
 
 	void setWeights(vector<vector<fp>>);
@@ -14,10 +15,13 @@ public:
 	vector<fp> getBias();
 	const int getNumberOfNeurons();
 	vector<neuron*> getNeurons();
-	vector<fp> resultFunc(vector<fp>,bool);
-	vector<float> dsigmoid(vector<fp>,bool);
-	vector<fp> operator()(vector<fp> LayerInput, bool FirstLayer) { return resultFunc(LayerInput, FirstLayer); }
+	vector<fp> resultFunc(vector<fp>);
+	vector<float> dsigmoid(vector<fp>);
+	vector<fp> operator()(vector<fp> LayerInput) { return resultFunc(LayerInput); }
 
 protected:
 	vector<neuron> Neurons;
+	bool FirstLayer;
+	int NumberOfNeurons;
+	int NumberOfInputs;
 };
