@@ -14,23 +14,18 @@ int main() {
 	float y = 0;
 	auto start = std::chrono::system_clock::now();
 	int NS = 150;
-	int WS = 1;
-	vector<fp> FInput(NS);
-	for (int j = 0; j < NS; j++)
+	int WS = 728;
+	vector<float*> FInput(WS);
+	for (int j = 0; j < WS; j++)
 	{
 		FInput[j] = &x;
 	}
 	try {
-		layer pi(NS, WS, true);
-		//layer pi2 = pi;
-		//cout << pi.getNumberOfNeurons() << endl;
-		//cout << *pi.getWeights()[0][0] << endl;
-		//pi.setWeights(pi.getWeights());
-		//cout << *pi.getWeights()[0][0] << endl;
-		//cout << *pi.resultFunc({ { &x,&y },{&y,&x} })[0] << endl;
-		vector<vector<fp>> LW = pi.getWeights();
+		layer pi(NS, WS);
+		//cout << x << endl;
+		vector<vector<float>> LW = pi.getWeights();
 		
-		vector<fp> LB = pi.getBias();
+		vector<float> LB = pi.getBias();
 		
 		int loopsize = 100;
 		for (int i = 0; i < loopsize; i++)
@@ -41,11 +36,18 @@ int main() {
 				
 				for (int k = 0; k < WS; k++)
 				{
-					*LW[j][k] = randomize(-1, 1);
+					LW[j][k] = randomize(-1, 1);
 				}
-				*LB[j] = randomize(-1, 1);
+				LB[j] = randomize(-1, 1);
 			}
+			pi.setWeights(LW);
+			pi.setBias(LB);
+
+			cout << "Weights: " << pi.getWeights()[0][0] << endl;
+			cout << "Bias: " << pi.getBias()[0] << endl;
 			cout << "Result: " << *pi(FInput)[0] << endl;
+			cout << "DSigmoid: " << pi.dsigmoid(FInput)[0] << endl;
+
 
 		}
 	}

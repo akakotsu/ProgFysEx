@@ -3,31 +3,37 @@
 #include<cmath>
 #include<vector>
 #include<random>
+#include<algorithm>
+#include<numeric>
 
 using namespace std;
-typedef float* fp;
+typedef float fp;
 
 class neuron {
 public:
-	neuron(vector<fp>, fp); //Constructor1, weight provided
+	neuron(vector<float>, float); //Constructor1, weight provided
 	neuron(int); //Constructor2, no weight provided, start of the program
 	~neuron(); //Destructor
 	neuron(const neuron&); //copy constructor
 	neuron& operator = (const neuron&); //assignment operator
-	void setWeights(vector<fp>); //Sets provided weights to vector Weights
-	void setBias(fp); //Sets provided bias to variable Bias
 
-	vector<fp> getWeights(); //get-function to access weights
-	fp getBias(); //get-function to access bias
+
+	void setWeights(vector<float>); //Sets provided weights to vector Weights
+	void setBias(float); //Sets provided bias to variable Bias
+
+	vector<float> getWeights(); //get-function to access weights
+	float getBias(); //get-function to access bias
 	const int getNumberOfInputs(); //get-function to access #inputs = size of Weights
-	float randomize(float, float); //rng function
-	float sigmoid(float); //Sigmoid function
-	float dsigmoid(float); //Derivative Sigmoid function
-	float activateFunc(vector <fp>); //Activate function, calls sigmoid
-	fp resultFunc(vector <fp>); //Calculates the neuron output, calls activateFunc
-	fp operator()(vector<fp> NeuronInput) {return resultFunc(NeuronInput); } //Overloading ()
+	float* sigmoid(float*); //Sigmoid function
+	float* dsigmoid(float*); //Derivative Sigmoid function
+	float* activateFunc(vector <float*>); //Activate function, calls sigmoid
+	float* resultFunc(vector <float*>); //Calculates the neuron output, calls activateFunc
+	float* operator()(vector<float*> NeuronInput) {return resultFunc(NeuronInput); } //Overloading ()
+
+	
 protected:
 	vector<float> Weights;
 	float Bias;
+	float randomize(float, float); //rng function
 	float Output;
 };
