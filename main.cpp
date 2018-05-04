@@ -1,6 +1,8 @@
 #include "Layer.h"
 #include<chrono>
 
+using std::cout;
+
 float randomize(float Minimum, float Maximum)
 {
 	random_device RandomDevice; //Initializes random engine
@@ -16,22 +18,31 @@ int main() {
 	int NS = 150;
 	int WS = 728;
 	vector<float*> FInput(WS);
-	for (int j = 0; j < WS; j++)
+	/*for (int j = 0; j < WS; j++)
 	{
 		FInput[j] = &x;
-	}
+	}*/
+	std::generate(FInput.begin(),FInput.end(),
+		[&]() {
+		return &x;
+	});
+
 	try {
 		layer pi(NS, WS);
 		//cout << x << endl;
 		vector<vector<float>> LW = pi.getWeights();
 		
 		vector<float> LB = pi.getBias();
-		
+		cout << "Weights: " << pi.getWeights()[0][0] << "," << pi.getWeights()[0][1] << " | " << pi.getWeights()[1][0] << "," << pi.getWeights()[1][1] << endl;
+		cout << "Bias: " << pi.getBias()[0] << " | " << pi.getBias()[1] << endl;
+		cout << "Result: " << *pi(FInput)[0] << " | " << *pi(FInput)[1] << endl;
+		cout << "DSigmoid: " << pi.dsigmoid(FInput)[0] << " | " << pi.dsigmoid(FInput)[1] << endl;
+
 		int loopsize = 100;
 		for (int i = 0; i < loopsize; i++)
 		{
 			cout << "loop: " << i << endl;
-			for (int j = 0; j < NS; j++)
+			/*for (int j = 0; j < NS; j++)
 			{
 				
 				for (int k = 0; k < WS; k++)
@@ -39,14 +50,28 @@ int main() {
 					LW[j][k] = randomize(-1, 1);
 				}
 				LB[j] = randomize(-1, 1);
-			}
+			}*/
+			std::for_each(LW.begin(),LW.end(),
+				[&](vector<float> &weight) {
+				std::generate(weight.begin(), weight.end(), 
+					[&]() {
+					return randomize(-1,1);
+				}
+					);
+					return weight;
+			});
+			std::generate(LB.begin(), LB.end(),
+				[&]() {
+				return randomize(-1, 1);
+			});
+
 			pi.setWeights(LW);
 			pi.setBias(LB);
 
-			cout << "Weights: " << pi.getWeights()[0][0] << " | "<< pi.getWeights()[1][0] << endl;
+			cout << "Weights: " << pi.getWeights()[0][0] << "," << pi.getWeights()[0][1] << " | "<< pi.getWeights()[1][0] << "," << pi.getWeights()[1][1] << endl;
 			cout << "Bias: " << pi.getBias()[0]<< " | " << pi.getBias()[1] << endl;
-			cout << "Result: " << *pi(FInput)[0] << endl;
-			cout << "DSigmoid: " << pi.dsigmoid(FInput)[0] << endl;
+			cout << "Result: " << *pi(FInput)[0] << " | " << *pi(FInput)[1] << endl;
+			cout << "DSigmoid: " << pi.dsigmoid(FInput)[0] << " | " << pi.dsigmoid(FInput)[1] << endl;
 
 
 		}

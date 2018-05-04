@@ -110,7 +110,10 @@ float* neuron::activateFunc(vector<float*> input)
 	}
 	Output += Bias;*/
 	vector<float> TInput(input.size());
-	std::transform(input.begin(), input.end(), TInput.begin(), [](float* Element)->float {return *Element; });
+	std::transform(input.begin(), input.end(), TInput.begin(), 
+		[](float* &Element) {
+		return *Element; 
+	});
 	Output = std::inner_product(Weights.begin(), Weights.end(), TInput.begin(), Bias);
 
 	return &Output;

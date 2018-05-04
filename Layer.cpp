@@ -10,15 +10,19 @@ layer::layer(vector<vector<float>>LayerWeights, vector<float> LayerBias, bool Fi
 	{
 		throw invalid_argument("First layer can only have 1 input per neuron");
 	}
-	Neurons.reserve(LayerBias.size());
-	for (int i = 0; i < LayerBias.size(); i++)
-	{
-		Neurons.push_back(neuron(LayerWeights.at(i), LayerBias.at(i) ));
-	}
 
 	FirstLayer = FirstLayerParam;
 	NumberOfNeurons = LayerBias.size();
 	NumberOfInputs = LayerWeights.at(0).size(); //Because it is a priori known that every neuron takes an equal amount of inputs
+
+	Neurons.reserve(NumberOfNeurons);
+	for (int i = 0; i < NumberOfNeurons; i++) //let's not use iterators here, shall we?
+	{
+		Neurons.push_back(neuron(LayerWeights.at(i), LayerBias.at(i) ));
+	}
+
+	
+
 }
 
 layer::layer(int InitNumberOfNeurons, int InitNumberOfInputs, bool FirstLayerParam)
@@ -32,10 +36,18 @@ layer::layer(int InitNumberOfNeurons, int InitNumberOfInputs, bool FirstLayerPar
 	{
 		throw invalid_argument("First layer can only have 1 input per neuron");
 	}
-	Neurons.assign(InitNumberOfNeurons, neuron(InitNumberOfInputs));
+	//Neurons.assign(InitNumberOfNeurons, neuron(InitNumberOfInputs));
 	FirstLayer = FirstLayerParam;
 	NumberOfNeurons = InitNumberOfNeurons;
 	NumberOfInputs = InitNumberOfInputs;
+
+	Neurons.reserve(NumberOfNeurons);
+	for (int i = 0; i < NumberOfNeurons; i++) //let's not use iterators here, shall we?
+	{
+		Neurons.push_back(neuron(NumberOfInputs));
+	}
+
+	
 }
 
 layer::~layer()
@@ -103,7 +115,7 @@ vector<vector<float>> layer::getWeights()
 {
 	vector<vector<float>> LayerWeights(Neurons.size());
 	std::transform(Neurons.begin(), Neurons.end(), LayerWeights.begin(),
-		[](neuron Neuron) {
+		[](neuron &Neuron) {
 		return Neuron.getWeights();
 	});
 	/*for (int i = 0; i < Neurons.size(); i++)
@@ -118,7 +130,7 @@ vector<float> layer::getBias()
 	vector<float> LayerBias(Neurons.size());
 
 	std::transform(Neurons.begin(), Neurons.end(), LayerBias.begin(), 
-		[](neuron Neuron) {
+		[](neuron &Neuron) {
 		return Neuron.getBias();
 	});
 	/*int it = 0;
