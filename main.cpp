@@ -39,7 +39,7 @@ int main() {
 		cout << "DSigmoid: " << pi.dsigmoid(FInput)[0] << " | " << pi.dsigmoid(FInput)[1] << endl;
 
 		int loopsize = 100;
-		for (int i = 0; i < loopsize; ++i)
+		for (int i = 0; i < loopsize; i++)
 		{
 			cout << "loop: " << i << endl;
 			/*for (int j = 0; j < NS; j++)
