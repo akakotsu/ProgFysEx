@@ -9,10 +9,14 @@ neuron::neuron(vector<float> WeightVector, float BiasNumber)
 neuron::neuron(int WeightVectorSize)
 {
 	Weights.resize(WeightVectorSize);
-	for (vector<float>::iterator i = Weights.begin(); i != Weights.end(); i++)
+	/*for (auto& i : Weights) //range-based loop, also iterator, but more compact
 	{
-		*i = randomize(-1, 1);
-	}
+		i = randomize(-1, 1);
+	}*/
+	std::generate(Weights.begin(), Weights.end(), 
+		[&]() {
+		return randomize(-1,1);
+	});
 
 	Bias = randomize(-1, 1);
 }

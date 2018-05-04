@@ -10,10 +10,12 @@ layer::layer(vector<vector<float>>LayerWeights, vector<float> LayerBias, bool Fi
 	{
 		throw invalid_argument("First layer can only have 1 input per neuron");
 	}
+	Neurons.reserve(LayerBias.size());
 	for (int i = 0; i < LayerBias.size(); i++)
 	{
 		Neurons.push_back(neuron(LayerWeights.at(i), LayerBias.at(i) ));
 	}
+
 	FirstLayer = FirstLayerParam;
 	NumberOfNeurons = LayerBias.size();
 	NumberOfInputs = LayerWeights.at(0).size(); //Because it is a priori known that every neuron takes an equal amount of inputs
@@ -67,10 +69,16 @@ void layer::setWeights(vector<vector<float>> LayerWeights)
 	{
 		throw invalid_argument("SetWeights():input has the wrong dimensions");
 	}
-	for (int i = 0; i < LayerWeights.size(); i++)
+	/*for (int i = 0; i < LayerWeights.size(); i++)
 	{
 		Neurons[i].setWeights( LayerWeights.at(i) );
-	}
+	}*/
+
+	int count = 0;
+	std::for_each(Neurons.begin(), Neurons.end(),
+		[&](neuron &Neuron) {
+		Neuron.setWeights(LayerWeights.at(count++));
+	});
 }
 
 void layer::setBias(vector<float> LayerBias)
@@ -79,29 +87,49 @@ void layer::setBias(vector<float> LayerBias)
 	{
 		throw invalid_argument("setBias(): input has the wrong dimension");
 	}
-	for (int i = 0; i < LayerBias.size(); i++)
+	/*for (int i = 0; i < LayerBias.size(); i++)
 	{
 		Neurons[i].setBias( LayerBias.at(i) );
-	}
+	}*/
+
+	int count = 0;
+	std::for_each(Neurons.begin(), Neurons.end(),
+		[&](neuron &Neuron) {
+		Neuron.setBias(LayerBias.at(count++));
+	});
 }
 
 vector<vector<float>> layer::getWeights()
 {
 	vector<vector<float>> LayerWeights(Neurons.size());
-	for (int i = 0; i < Neurons.size(); i++)
+	std::transform(Neurons.begin(), Neurons.end(), LayerWeights.begin(),
+		[](neuron Neuron) {
+		return Neuron.getWeights();
+	});
+	/*for (int i = 0; i < Neurons.size(); i++)
 	{
 		LayerWeights.at(i) = Neurons.at(i).getWeights();
-	}
+	}*/
 	return LayerWeights;
 }
 
 vector<float> layer::getBias()
 {
-	vector<fp> LayerBias(Neurons.size());
-	for (int i = 0; i < Neurons.size(); i++)
+	vector<float> LayerBias(Neurons.size());
+
+	std::transform(Neurons.begin(), Neurons.end(), LayerBias.begin(), 
+		[](neuron Neuron) {
+		return Neuron.getBias();
+	});
+	/*int it = 0;
+	std::generate(LayerBias.begin(), LayerBias.end(),
+		[&]() {
+		return Neurons.at(it++).getBias();
+	});*/
+	/*for (int i = 0; i < Neurons.size(); i++)
 	{
 		LayerBias.at(i) = Neurons.at(i).getBias();
-	}
+	}*/
 	return LayerBias;
 }
 
@@ -127,10 +155,18 @@ vector<float*> layer::resultFunc(vector<float*> LayerInput)
 		}
 
 		//Because every Neuron in the first layer has only one weight/input
-		for (int i = 0; i < NumberOfNeurons; i++)
+
+		int count = 0;
+		std::transform(Neurons.begin(), Neurons.end(),LayerOutput.begin(),
+			[&](neuron &Neuron) {
+			return Neuron.resultFunc({ LayerInput.at(count++) });
+		});
+
+		/*for (int i = 0; i < NumberOfNeurons; i++)
 		{
 			LayerOutput.at(i) = Neurons.at(i).resultFunc( { LayerInput.at(i) } );
-		}
+		}*/
+
 	}
 	else
 	{
@@ -140,10 +176,15 @@ vector<float*> layer::resultFunc(vector<float*> LayerInput)
 		}
 
 		//Because every Neuron in the has the same input: all the outputs of the previous layer 
-		for (int i = 0; i < NumberOfNeurons; i++)
+		/*for (int i = 0; i < NumberOfNeurons; i++)
 		{
 			LayerOutput.at(i) = Neurons.at(i).resultFunc(LayerInput);
-		}
+		}*/
+
+		std::transform(Neurons.begin(), Neurons.end(),LayerOutput.begin(),
+			[&](neuron &Neuron) {
+			return Neuron.resultFunc(LayerInput);
+		});
 	}
 	return LayerOutput;
 }
@@ -159,11 +200,17 @@ vector<float> layer::dsigmoid(vector<float*> Input)
 		{
 			throw invalid_argument("dsigmoid(): input has the wrong dimension");
 		}
-		for (int i = 0; i < NumberOfNeurons; i++)
+		/*for (int i = 0; i < NumberOfNeurons; i++)
 		{
 			z = Neurons.at(i).activateFunc({ Input.at(i) });
 			DSigmoidOutput.at(i) = *Neurons.at(i).dsigmoid(z);
-		}
+		}*/
+		int count = 0;
+		std::transform(Neurons.begin(), Neurons.end(), DSigmoidOutput.begin(),
+			[&](neuron &Neuron) {
+			z = Neuron.activateFunc({ Input.at(count++) });
+			return *Neuron.dsigmoid(z);
+		});
 	}
 	else
 	{
@@ -171,11 +218,17 @@ vector<float> layer::dsigmoid(vector<float*> Input)
 		{
 			throw invalid_argument("dsigmoid(): input has the wrong dimension");
 		}
-		for (int i = 0; i < NumberOfNeurons; i++)
+		/*for (int i = 0; i < NumberOfNeurons; i++)
 		{
 			z = Neurons.at(i).activateFunc(Input);
 			DSigmoidOutput.at(i) = *Neurons.at(i).dsigmoid(z);
-		}
+		}*/
+		//int count = 0;
+		std::transform(Neurons.begin(), Neurons.end(),DSigmoidOutput.begin(),
+			[&](neuron &Neuron) {
+			z = Neuron.activateFunc(Input);
+			return *Neuron.dsigmoid(z);
+		});
 	}
 	return DSigmoidOutput;
 }

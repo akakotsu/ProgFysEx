@@ -43,8 +43,8 @@ int main() {
 			pi.setWeights(LW);
 			pi.setBias(LB);
 
-			cout << "Weights: " << pi.getWeights()[0][0] << endl;
-			cout << "Bias: " << pi.getBias()[0] << endl;
+			cout << "Weights: " << pi.getWeights()[0][0] << " | "<< pi.getWeights()[1][0] << endl;
+			cout << "Bias: " << pi.getBias()[0]<< " | " << pi.getBias()[1] << endl;
 			cout << "Result: " << *pi(FInput)[0] << endl;
 			cout << "DSigmoid: " << pi.dsigmoid(FInput)[0] << endl;
 

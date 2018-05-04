@@ -29,11 +29,10 @@ public:
 	float* activateFunc(vector <float*>); //Activate function, calls sigmoid
 	float* resultFunc(vector <float*>); //Calculates the neuron output, calls activateFunc
 	float* operator()(vector<float*> NeuronInput) {return resultFunc(NeuronInput); } //Overloading ()
-
+	float Output;
 	
 protected:
 	vector<float> Weights;
 	float Bias;
 	float randomize(float, float); //rng function
-	float Output;
 };
