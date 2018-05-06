@@ -1,12 +1,12 @@
 #include "Neuron.h"
 
-neuron::neuron(vector<float> WeightVector, float BiasNumber)
+neuron::neuron(const vector<float>& WeightVector, const float& BiasNumber)
 {
 	setWeights(WeightVector);
 	setBias(BiasNumber);
 }
 
-neuron::neuron(int WeightVectorSize)
+neuron::neuron(const int& WeightVectorSize)
 {
 	Weights.resize(WeightVectorSize);
 	/*for (auto& i : Weights) //range-based loop, also iterator, but more compact
@@ -19,6 +19,7 @@ neuron::neuron(int WeightVectorSize)
 	});
 
 	Bias = randomize(-1, 1);
+	NeuronUpdate = false;
 }
 
 
@@ -44,7 +45,7 @@ neuron& neuron::operator = (const neuron& Neuron1)
 	return *this;
 }
 
-void neuron::setWeights(vector<float> WeightVector)
+void neuron::setWeights(const vector<float>& WeightVector)
 {
 	Weights = WeightVector;
 	/*Weights.resize(WeightVector.size());
@@ -52,11 +53,13 @@ void neuron::setWeights(vector<float> WeightVector)
 	{
 		Weights[i] = *WeightVector[i];
 	}*/
+	NeuronUpdate = false;
 }
 
-void neuron::setBias(float BiasNumber)
+void neuron::setBias(const float& BiasNumber)
 {
 	Bias = BiasNumber;
+	NeuronUpdate = false;
 }
 
 float neuron::randomize(float Minimum, float Maximum)
@@ -87,21 +90,29 @@ const int neuron::getNumberOfInputs()
 	return Weights.size();
 }
 
-float* neuron::sigmoid(float* z)
+void neuron::sigmoid(float& z)
 {
-	*z = 1 / (1 + exp(-*z));
-	return z;
+	z = 1 / (1 + exp(-z));
+	//return z;
 }
 
-float* neuron::dsigmoid(float* z)
+float neuron::dsigmoid(const vector<float*>& input)
 {
-	float temp = *sigmoid(z);
-	*z = temp*(1 - temp);
-	return z;
+	if (NeuronUpdate == true)
+	{
+		
+	}
+	else
+	{
+		NeuronUpdate = true;
+		activateFunc(input);
+		sigmoid(Output);
+	}
+	return Output*(1 - Output);;
 }
 
 
-float* neuron::activateFunc(vector<float*> input)
+void neuron::activateFunc(const vector<float*>& input)
 {
 	Output = 0;
 	/*for (int i = 0; i < input.size(); i++)
@@ -111,17 +122,19 @@ float* neuron::activateFunc(vector<float*> input)
 	Output += Bias;*/
 	vector<float> TInput(input.size());
 	std::transform(input.begin(), input.end(), TInput.begin(), 
-		[](float* &Element) {
+		[](float* Element) {
 		return *Element; 
 	});
 	Output = std::inner_product(Weights.begin(), Weights.end(), TInput.begin(), Bias);
 
-	return &Output;
+	//return Output;
 }
 
-float* neuron::resultFunc(vector<float*> input)
+float neuron::resultFunc(const vector<float*>& input)
 {
-	Output = *sigmoid(activateFunc(input));
-	return  &Output;
+	NeuronUpdate = true;
+	activateFunc(input);
+	sigmoid(Output);
+	return  Output;
 }
 
